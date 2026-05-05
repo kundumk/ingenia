@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>INGENIA — India's Engineering Intelligence Hub</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:'DM Sans',sans-serif;background:#06071A;color:#E2E2F0;min-height:100vh;}
+.hdr{background:#08091E;border-bottom:1px solid rgba(255,107,0,.3);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(120deg,#FF6B00,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;}
+.tagline{font-size:10px;color:rgba(226,226,240,.38);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.pill{background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.35);color:#FF9240;font-size:10.5px;padding:4px 14px;border-radius:20px;white-space:nowrap;}
+.tabbar{display:flex;gap:2px;padding:10px 20px 0;background:#0A0B20;border-bottom:1px solid rgba(255,255,255,.05);overflow-x:auto;scrollbar-width:none;position:sticky;top:57px;z-index:99;}
+.tabbar::-webkit-scrollbar{display:none;}
+.tb{padding:9px 14px;border-radius:8px 8px 0 0;background:transparent;border:none;color:rgba(226,226,240,.4);font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s;}
+.tb:hover{color:rgba(226,226,240,.8);background:rgba(255,255,255,.04);}
+.tb.on{color:#FF6B00;border-bottom:2px solid #FF6B00;background:rgba(255,107,0,.08);}
+.page{padding:26px 22px;max-width:1080px;margin:0 auto;}
+.sec-t{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;color:#FFF;margin-bottom:6px;}
+.sec-s{font-size:12.5px;color:rgba(226,226,240,.45);margin-bottom:22px;line-height:1.65;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.card{background:#0C0E24;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;transition:.2s;}
+.card:hover{border-color:rgba(255,107,0,.3);transform:translateY(-2px);}
+.ci{font-size:22px;margin-bottom:9px;}
+.ct{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#FFF;margin-bottom:6px;}
+.cs{font-size:11.5px;color:rgba(226,226,240,.5);margin-bottom:11px;line-height:1.65;}
+.sal{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#FF6B00;}
+.sal-l{font-size:9.5px;color:rgba(226,226,240,.32);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;}
+.lbl{font-size:9px;color:rgba(226,226,240,.32);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;margin-top:10px;}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:500;margin:2px;}
+.to{background:rgba(255,107,0,.13);color:#FF9240;border:1px solid rgba(255,107,0,.28);}
+.tb2{background:rgba(56,136,255,.1);color:#7AAFFF;border:1px solid rgba(56,136,255,.22);}
+.tg{background:rgba(0,200,110,.1);color:#4ECDA4;border:1px solid rgba(0,200,110,.22);}
+.db{font-size:10px;padding:2px 9px;border-radius:20px;display:inline-block;}
+.dxh{background:rgba(255,60,60,.12);color:#FF7070;border:1px solid rgba(255,60,60,.28);}
+.dvh{background:rgba(255,150,0,.12);color:#FFB84D;border:1px solid rgba(255,150,0,.28);}
+.dh{background:rgba(0,200,110,.1);color:#4ECDA4;border:1px solid rgba(0,200,110,.22);}
+.dmh{background:rgba(100,150,255,.1);color:#90AEFF;border:1px solid rgba(100,150,255,.22);}
+.ec{background:#0C0E24;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;margin-bottom:13px;}
+.en{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#FFF;}
+.eb{font-size:11px;color:rgba(226,226,240,.38);margin-top:2px;}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px;}
+.ei-lbl{font-size:9px;color:rgba(226,226,240,.35);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px;}
+.ei-val{font-size:12px;color:#E2E2F0;}
+.tip{margin-top:12px;padding:10px 13px;background:rgba(255,107,0,.06);border-radius:8px;border:1px solid rgba(255,107,0,.15);font-size:11.5px;color:rgba(226,226,240,.7);line-height:1.6;}
+.tip b{color:#FF9240;}
+.tl{position:relative;padding-left:24px;}
+.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:rgba(255,107,0,.18);}
+.tli{position:relative;margin-bottom:20px;}
+.tld{position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;background:#FF6B00;box-shadow:0 0 8px rgba(255,107,0,.4);}
+.tldate{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,107,0,.12);color:#FF9240;margin-bottom:5px;}
+.tlt{font-size:13.5px;font-weight:600;color:#FFF;margin-bottom:4px;}
+.tlb{font-size:12px;color:rgba(226,226,240,.5);line-height:1.65;}
+.btn{background:linear-gradient(120deg,#FF6B00,#FF9500);border:none;color:#FFF;padding:10px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn:hover{opacity:.88;transform:translateY(-1px);}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.btn-o{background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);color:#FF9240;}
+select{background:#0C0E24;border:1px solid rgba(255,255,255,.12);color:#E2E2F0;padding:9px 13px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12.5px;outline:none;cursor:pointer;width:100%;max-width:320px;}
+select:focus{border-color:rgba(255,107,0,.55);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
+.ai-box{background:#0C0E24;border:1px solid rgba(255,107,0,.2);border-radius:14px;padding:20px;min-height:90px;}
+.ai-txt{font-size:13px;line-height:1.9;color:rgba(226,226,240,.88);white-space:pre-wrap;}
+.ld{display:flex;align-items:center;gap:8px;color:rgba(255,107,0,.7);font-size:13px;padding:16px 0;}
+.dot{width:6px;height:6px;background:#FF6B00;border-radius:50%;animation:bop 1.2s infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bop{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-7px);}}
+
+.hero-empty{text-align:center;padding:44px 20px;}
+.hero-empty .icon{font-size:48px;margin-bottom:14px;}
+.hero-empty p{font-size:13.5px;color:rgba(226,226,240,.5);margin-bottom:22px;line-height:1.7;}
+/* api key banner */
+.api-banner{background:#0D0F26;border-bottom:1px solid rgba(255,107,0,.25);padding:10px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.api-banner span{font-size:11.5px;color:rgba(226,226,240,.55);white-space:nowrap;}
+.api-input{background:#06071A;border:1px solid rgba(255,107,0,.3);color:#E2E2F0;padding:7px 12px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;flex:1;min-width:200px;max-width:380px;}
+.api-input:focus{border-color:#FF6B00;}
+.api-ok{font-size:11px;color:#4ECDA4;white-space:nowrap;}
+.api-info{font-size:10.5px;color:rgba(226,226,240,.3);white-space:nowrap;}
+/* news */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px;margin-bottom:18px;}
+.news-card{background:#0C0E24;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:16px;border-left:3px solid #FF6B00;}
+.news-card.blue{border-left-color:#5B8CFF;}
+.news-card.green{border-left-color:#3ECDA4;}
+.news-cat{font-size:9.5px;text-transform:uppercase;letter-spacing:1.5px;color:#FF9240;margin-bottom:6px;font-weight:600;}
+.news-card.blue .news-cat{color:#7AAFFF;}
+.news-card.green .news-cat{color:#3ECDA4;}
+.news-title{font-size:13px;font-weight:600;color:#FFF;margin-bottom:5px;line-height:1.5;}
+.news-body{font-size:11.5px;color:rgba(226,226,240,.55);line-height:1.65;}
+.news-date{font-size:10px;color:rgba(226,226,240,.3);margin-top:8px;}
+/* courses */
+.crs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px;}
+.crs-card{background:#0C0E24;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:16px;transition:.2s;}
+.crs-card:hover{border-color:rgba(255,107,0,.3);transform:translateY(-2px);}
+.crs-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.crs-name{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:800;color:#FFF;}
+.crs-free{font-size:9.5px;padding:2px 8px;border-radius:20px;background:rgba(0,200,110,.1);color:#4ECDA4;border:1px solid rgba(0,200,110,.25);}
+.crs-paid{font-size:9.5px;padding:2px 8px;border-radius:20px;background:rgba(255,107,0,.12);color:#FF9240;border:1px solid rgba(255,107,0,.28);}
+.crs-sub{font-size:11px;color:rgba(226,226,240,.45);margin-bottom:9px;}
+.crs-desc{font-size:12px;color:rgba(226,226,240,.7);line-height:1.65;margin-bottom:10px;}
+.crs-link{font-size:11px;color:#FF9240;text-decoration:none;}
+.crs-link:hover{text-decoration:underline;}
+.sec-h2{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#FFF;margin:22px 0 12px;}
+/* english / python topic select */
+.topic-btn{padding:7px 14px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(226,226,240,.6);font-family:'DM Sans',sans-serif;font-size:11.5px;cursor:pointer;transition:.2s;white-space:nowrap;}
+.topic-btn:hover{border-color:rgba(255,107,0,.35);color:#FF9240;}
+.topic-btn.sel{border-color:#FF6B00;background:rgba(255,107,0,.1);color:#FF9240;}
+.topic-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+@media(max-width:600px){
+  .egrid{grid-template-columns:1fr;}
+  .logo{font-size:20px;}
+  .hdr{padding:11px 14px;}
+  .page{padding:18px 14px;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback } = React;
+
+const PHY = ["Physical World & Units","Motion in a Straight Line","Motion in a Plane","Laws of Motion","Work, Energy & Power","System of Particles & Rotational Motion","Gravitation","Mechanical Properties of Solids","Mechanical Properties of Fluids","Thermal Properties of Matter","Thermodynamics","Kinetic Theory of Gases","Oscillations","Waves"];
+const CHEM = ["Some Basic Concepts of Chemistry","Structure of Atom","Classification of Elements & Periodicity","Chemical Bonding & Molecular Structure","States of Matter","Chemical Thermodynamics","Equilibrium","Redox Reactions","Hydrogen","s-Block Elements","p-Block Elements (Groups 13-14)","Organic Chemistry - Basic Principles","Hydrocarbons","Environmental Chemistry"];
+const MATH = ["Sets","Relations & Functions","Trigonometric Functions","Principle of Mathematical Induction","Complex Numbers & Quadratic Equations","Linear Inequalities","Permutations & Combinations","Binomial Theorem","Sequences & Series","Straight Lines","Conic Sections","Introduction to 3D Geometry","Limits & Derivatives","Mathematical Reasoning","Statistics","Probability"];
+const CBSE_MAP = {
+  Physics: PHY, Chemistry: CHEM, Mathematics: MATH,
+  Biology: ["The Living World","Biological Classification","Plant Kingdom","Animal Kingdom","Morphology of Flowering Plants","Anatomy of Flowering Plants","Structural Organisation in Animals","Cell: The Unit of Life","Biomolecules","Cell Cycle & Cell Division","Transport in Plants","Mineral Nutrition","Photosynthesis in Higher Plants","Respiration in Plants","Plant Growth & Development","Digestion & Absorption","Breathing & Exchange of Gases","Body Fluids & Circulation","Excretory Products & Elimination","Locomotion & Movement","Neural Control & Coordination","Chemical Coordination & Integration"],
+  "Computer Science": ["Computer Systems & Organisation","Introduction to Python","Data Types & Operators","Flow of Control","Functions","Strings","Lists, Dictionaries & Tuples","Societal Impacts of IT"],
+};
+const PROG = [
+  {e:"💻",n:"CSE / AI / ML",d:"Extremely High",s:"Rs 8-40 LPA",c:["IIT Bombay","IIT Delhi","NIT Trichy","BITS Pilani"],sp:["AI/ML","Cybersecurity","Cloud Computing","Data Science"],o:"AI boom driving 40%+ growth in ML roles. Highest-demand engineering field in India 2025."},
+  {e:"📡",n:"Electronics & Communication (ECE)",d:"Very High",s:"Rs 6-25 LPA",c:["IIT Madras","IIT Kharagpur","NIT Warangal","BITS Hyd"],sp:["VLSI","Embedded Systems","5G/6G","IoT"],o:"Make in India semiconductor push creating thousands of chip-design and fab jobs."},
+  {e:"🧠",n:"Data Science & AI (B.Tech)",d:"Extremely High",s:"Rs 10-50 LPA",c:["IIT Hyderabad","IIT Jodhpur","CMI","ISI Kolkata"],sp:["ML Engineering","NLP","Computer Vision","Analytics"],o:"2M+ jobs projected by 2027 per NASSCOM. India's fastest-growing engineering field."},
+  {e:"⚙️",n:"Mechanical Engineering",d:"High",s:"Rs 5-20 LPA",c:["IIT Kanpur","IIT Bombay","NIT Surathkal","BITS Goa"],sp:["Robotics","EV / Automotive","Aerospace","Advanced Mfg"],o:"EV revolution and defence manufacturing opening massive avenues for fresh graduates."},
+  {e:"🏗️",n:"Civil Engineering",d:"Moderate-High",s:"Rs 4-15 LPA",c:["IIT Roorkee","NIT Calicut","IIT Delhi","BITS Pilani"],sp:["Structural","Transportation","Smart Cities","Environmental"],o:"Rs 111 lakh crore national infra push (NIP) sustaining demand for an entire decade."},
+  {e:"🚀",n:"Aerospace Engineering",d:"High",s:"Rs 6-22 LPA",c:["IIT Bombay","IIT Kanpur","IIST Trivandrum","PEC Chandigarh"],sp:["Propulsion","Avionics","Space Tech","Defence"],o:"ISRO expansion + private space boom (Skyroot, Agnikul) makes this a red-hot pick."},
+];
+const EXAMS = [
+  {n:"JEE Main",b:"NTA - National Testing Agency",lv:"National",reg:"Nov-Dec 2024 (S1) | Feb-Mar 2025 (S2)",dt:"Jan-Feb & Apr 2025",att:"2 per year",elig:"12th PCM, 75% aggregate",seats:"~2.5 Lakh qualify for Advanced",pat:"90 MCQs, PCM, 300 marks, 3 hours",tip:"Master NCERT first. Practice 10+ year papers. Negative marking: -1 per wrong MCQ."},
+  {n:"JEE Advanced",b:"IITs (rotational organiser)",lv:"National - IIT Admission",reg:"Apr-May 2025",dt:"May 2025",att:"2 lifetime attempts",elig:"Top 2.5 Lakh from JEE Main",seats:"~17,000 seats across 23 IITs",pat:"2 papers x 3 hrs | MCQ + Integer + Paragraph types",tip:"Deep conceptual clarity wins over speed. Mock test under real exam conditions weekly."},
+  {n:"BITSAT",b:"BITS Pilani",lv:"Institute Level",reg:"Jan-Apr 2025",dt:"May-Jun 2025",att:"1 per year",elig:"12th PCM 75%+, English 60%+",seats:"~2,000 (4 campuses)",pat:"130 MCQs + 12 bonus questions in 3 hrs",tip:"Finish all 130 early - bonus Qs can dramatically change rank. Speed practice is key."},
+  {n:"VITEEE",b:"VIT University",lv:"Institute Level",reg:"Nov 2024 - Mar 2025",dt:"Apr-May 2025",att:"1 per year",elig:"12th PCM 60%+",seats:"5,000+ (Vellore, Chennai, AP, Bhopal)",pat:"125 MCQs (PCM + English + Aptitude) in 2.5 hrs",tip:"High acceptance rate and excellent placements. Best safety net alongside JEE."},
+  {n:"MHTCET",b:"State CET Cell, Maharashtra",lv:"State - Maharashtra",reg:"Jan-Mar 2025",dt:"Apr-May 2025",att:"1 per year",elig:"12th PCM; MH domicile preferred",seats:"80,000+ seats statewide",pat:"150 MCQs (PCM) in 3 hrs | 20% from Class 11",tip:"Don't skip Class XI topics - they carry real marks! COEP and VJTI are top targets."},
+  {n:"WBJEE",b:"West Bengal Joint Entrance Board",lv:"State - West Bengal",reg:"Dec 2024 - Jan 2025",dt:"Apr 2025",att:"1 per year",elig:"12th PCM 45%+",seats:"40,000+ seats in WB colleges",pat:"155 MCQs (Maths 75 + PC 80) in 2 hrs",tip:"Strong Maths focus. Jadavpur University is the prize - maths score is decisive."},
+];
+const STEPS = [
+  {dt:"Start Now",t:"Gather All Documents",b:"Aadhaar card, Class 10 & 11 marksheets, passport-size photo (JPG < 200 KB), signature scan, category/PwD certificate if applicable. Keep scanned digital copies ready."},
+  {dt:"Nov-Dec 2024",t:"JEE Main Session 1 Registration",b:"Visit jeemain.nta.nic.in → New Registration → Fill form → Upload docs → Pay fee (Rs 1000 General / Rs 800 OBC / Rs 500 SC/ST) → Download Admit Card in January."},
+  {dt:"Jan-Apr 2025",t:"BITSAT, VITEEE & Private Exam Registrations",b:"Register simultaneously! BITSAT: bitsadmission.com | VITEEE: vit.ac.in | SRMJEE: srmist.edu.in. Use a separate email ID for each exam."},
+  {dt:"Feb-Mar 2025",t:"JEE Main Session 2 Registration",b:"Same portal - jeemain.nta.nic.in. Fresh application required. Best of two scores used for rank. Fee same as Session 1. Always attempt both sessions."},
+  {dt:"Jan-Mar 2025",t:"State Exam Registrations",b:"MHTCET: cetcell.mahacet.org | WBJEE: wbjeeb.nic.in | KCET: kea.kar.nic.in. Most require domicile proof. Apply early - servers crash on the last day every year!"},
+  {dt:"Apr-May 2025",t:"JEE Advanced Registration",b:"jeeadv.ac.in - Only if you qualify in Top 2.5 Lakh JEE Main ranks. Pay Rs 3000 (Gen/OBC) or Rs 1500 (SC/ST). Register immediately once you qualify!"},
+  {dt:"Jun-Jul 2025",t:"JoSAA Counselling & Seat Acceptance",b:"6 rounds via josaa.nic.in for IITs/NITs/IIITs. CSAB for remaining NIT seats. Keep Rs 40,000-60,000 ready for seat acceptance fee. State counselling runs simultaneously."},
+];
+
+
+const ENG_TOPICS = ["Flamingo: The Last Lesson","Flamingo: Lost Spring","Flamingo: Deep Water","Flamingo: The Rattrap","Flamingo: Indigo","Flamingo: Poets & Pancakes","Flamingo: The Interview","Flamingo: Going Places","Vistas: The Third Level","Vistas: The Tiger King","Vistas: The Enemy","Vistas: On the Face of It","Vistas: Memories of Childhood","Writing: Article Writing","Writing: Letter to Editor","Writing: Speech Writing","Writing: Report Writing","Poetry: My Mother at Sixty-Six","Poetry: An Elementary School Classroom","Poetry: Keeping Quiet","Poetry: A Thing of Beauty","Poetry: Aunt Jennifer's Tigers","Reading: Unseen Passage (Factual)","Reading: Unseen Passage (Discursive)"];
+const PY_TOPICS = ["Python Fundamentals & Data Types","String Operations & Functions","List: Operations, Methods & Programs","Tuples & Sets","Dictionary: Operations & Programs","Functions: def, return, scope, recursion","File Handling: read, write, append","Exception Handling: try-except","NumPy Basics & Array Operations","Pandas: Series & DataFrame","Data Visualization: Matplotlib","MySQL Connectivity with Python","SQL Queries: SELECT, JOIN, GROUP BY","Stack using Python (Data Structure)","Queue using Python (Data Structure)","Sorting Algorithms in Python","Searching Algorithms in Python","OOP: Classes, Objects, Inheritance","Recursion Programs","Pattern Programs & Number Problems"];
+const COURSES = {
+  "JEE / Engineering": [
+    {n:"Khan Academy",free:true,sub:"Maths & Physics",d:"World-class free videos for every Class XI-XII concept. Best starting point for building fundamentals.",l:"khanacademy.org"},
+    {n:"NPTEL (IIT Professors)",free:true,sub:"Physics, Chemistry, Maths",d:"Free video lectures by actual IIT professors. Extremely rigorous — perfect for JEE Advanced prep.",l:"nptel.ac.in"},
+    {n:"Unacademy JEE",free:false,sub:"Full JEE Main + Advanced",d:"India's largest coaching platform. Live classes, doubt sessions, test series. Rs 8,000-25,000/yr.",l:"unacademy.com"},
+    {n:"Physics Wallah (PW)",free:true,sub:"PCM for JEE",d:"Best free full-syllabus JEE course. Alakh Pandey's Physics is legendary. Also on YouTube free.",l:"pw.live"},
+    {n:"Vedantu VSAT",free:false,sub:"JEE Main + Advanced",d:"Personalized AI-based learning + live mentors. Scholarship tests available for 90% fee waiver.",l:"vedantu.com"},
+    {n:"BYJU's JEE Prep",free:false,sub:"Full PCM",d:"Adaptive learning, video explanations, and comprehensive test series. Tablet course available.",l:"byjus.com"},
+  ],
+  "CBSE Class XI & XII": [
+    {n:"NCERT Official",free:true,sub:"All Subjects",d:"The bible of CBSE. All textbooks, exemplar problems and solutions free. Never skip NCERT.",l:"ncert.nic.in"},
+    {n:"Meritnation",free:false,sub:"All CBSE Subjects",d:"Chapter-wise videos, NCERT solutions, and board exam practice papers. Rs 2,000-5,000/yr.",l:"meritnation.com"},
+    {n:"Toppr",free:false,sub:"Science & Maths XI-XII",d:"Adaptive practice with 15 lakh+ questions. Live doubt solving. Good for board + entrance combo.",l:"toppr.com"},
+    {n:"Extramarks",free:false,sub:"All CBSE Subjects",d:"School-integrated platform. Strong for CBSE board pattern with animated video content.",l:"extramarks.com"},
+    {n:"Shiksha.com / Careers360",free:true,sub:"Guidance + Resources",d:"Free college guides, exam alerts, sample papers and study material — great for planning.",l:"shiksha.com"},
+    {n:"ePathshala (Govt.)",free:true,sub:"All NCERT Subjects",d:"Official Govt. of India app with all NCERT books, audio, video in multiple languages. 100% free.",l:"epathshala.nic.in"},
+  ],
+  "Coding & Python": [
+    {n:"CS50P (Harvard)",free:true,sub:"Python Programming",d:"Harvard's world-famous Python course on edX. Completely free. Certificate available. Best in class.",l:"cs50.harvard.edu/python"},
+    {n:"Python.org Tutorials",free:true,sub:"Python Fundamentals",d:"Official Python documentation tutorial. Best for Class XII Python board concepts.",l:"docs.python.org/3/tutorial"},
+    {n:"W3Schools Python",free:true,sub:"Python + SQL + Web",d:"Quick reference for Python, MySQL, and web basics. Perfect for board exam quick revision.",l:"w3schools.com/python"},
+    {n:"Replit (Practice)",free:true,sub:"Python Coding",d:"Free browser-based Python IDE. Write and run code instantly without installing anything.",l:"replit.com"},
+    {n:"Coursera - Python for Everybody",free:false,sub:"Python (University of Michigan)",d:"World's most popular Python MOOC. Audit free, certificate paid. Excellent for beginners.",l:"coursera.org"},
+    {n:"CBSE Skill Modules (AI/Python)",free:true,sub:"Class XI-XII Python",d:"Official CBSE AI and Python skill education modules aligned exactly to board syllabus.",l:"cbseacademic.nic.in"},
+  ],
+  "Competitive Exam Prep": [
+    {n:"Allen Online",free:false,sub:"JEE / NEET",d:"Kota's most trusted coaching institute. Online batches from Rs 15,000/yr. Strong test series.",l:"allen.ac.in"},
+    {n:"Aakash iTutor",free:false,sub:"JEE / NEET / Boards",d:"India's pioneer in test prep. Video + live classes + doubt app. Hybrid batch options available.",l:"aesl.in"},
+    {n:"TestBook",free:false,sub:"All Competitive Exams",d:"Excellent for mock tests, PYQ practice, and current affairs. Rs 1,000-3,000/yr.",l:"testbook.com"},
+    {n:"Embibe",free:true,sub:"JEE / NEET",d:"AI-powered free platform. Identifies your weak topics and personalises practice. Govt. partnership.",l:"embibe.com"},
+  ],
+};
+
+let _apiKey = "";
+function setApiKey(k){ _apiKey = k.trim(); }
+
+async function callClaude(prompt) {
+  const headers = { "Content-Type": "application/json", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+  if (_apiKey) headers["x-api-key"] = _apiKey;
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ model: "claude-opus-4-5-20251101", max_tokens: 1200, messages: [{ role: "user", content: prompt }] }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || "API error " + res.status);
+  }
+  const data = await res.json();
+  return data.content.map(b => b.text || "").join("");
+}
+
+function Loader() {
+  return (
+    <div className="ld">
+      <div className="dot"/><div className="dot"/><div className="dot"/>
+      <span>AI is generating your answer...</span>
+    </div>
+  );
+}
+
+function ProgramsTab() {
+  const dm = { Extremely: "dxh", Very: "dvh", High: "dh", Moderate: "dmh" };
+  return (
+    <div>
+      <h2 className="sec-t">Best Engineering Programs — India 2025</h2>
+      <p className="sec-s">Market analysis from NASSCOM, AICTE and live hiring data. Salary = fresher to 3-year experience CTC.</p>
+      <div className="grid2">
+        {PROG.map(p => {
+          const dk = dm[p.d.split(" ")[0]] || "dh";
+          return (
+            <div className="card" key={p.n}>
+              <div className="ci">{p.e}</div>
+              <div className="ct">{p.n}</div>
+              <div className="cs">{p.o}</div>
+              <div className="sal">{p.s}</div>
+              <div className="sal-l">Avg CTC Range</div>
+              <span className={"db " + dk}>{p.d} Demand</span>
+              <span className="lbl">Top Colleges</span>
+              {p.c.map(c => <span className="tag tb2" key={c}>{c}</span>)}
+              <span className="lbl">Hot Specialisations</span>
+              {p.sp.map(s => <span className="tag to" key={s}>{s}</span>)}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ExamsTab() {
+  return (
+    <div>
+      <h2 className="sec-t">Top Engineering Entrance Exams — 2025</h2>
+      <p className="sec-s">Registration windows, exam dates, eligibility, pattern and insider strategy for every major exam.</p>
+      {EXAMS.map(e => (
+        <div className="ec" key={e.n}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"8px"}}>
+            <div><div className="en">{e.n}</div><div className="eb">{e.b}</div></div>
+            <span className="tag tg">{e.lv}</span>
+          </div>
+          <div className="egrid">
+            <div><span className="ei-lbl">Registration</span><span className="ei-val">{e.reg}</span></div>
+            <div><span className="ei-lbl">Exam Date</span><span className="ei-val">{e.dt}</span></div>
+            <div><span className="ei-lbl">Attempts</span><span className="ei-val">{e.att}</span></div>
+            <div><span className="ei-lbl">Eligibility</span><span className="ei-val">{e.elig}</span></div>
+            <div><span className="ei-lbl">Pattern</span><span className="ei-val">{e.pat}</span></div>
+            <div><span className="ei-lbl">Seats / Scope</span><span className="ei-val">{e.seats}</span></div>
+          </div>
+          <div className="tip"><b>Pro Tip: </b>{e.tip}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EnrollTab() {
+  return (
+    <div>
+      <h2 className="sec-t">How to Enroll — Complete Roadmap</h2>
+      <p className="sec-s">Every deadline, every fee, every action item for the 2024-25 engineering admission cycle.</p>
+      <div className="tl">
+        {STEPS.map(s => (
+          <div className="tli" key={s.t}>
+            <div className="tld"/>
+            <div className="tldate">{s.dt}</div>
+            <div className="tlt">{s.t}</div>
+            <div className="tlb">{s.b}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AIUpdatesTab() {
+  const [txt, setTxt] = useState("");
+  const [load, setLoad] = useState(false);
+  const [done, setDone] = useState(false);
+  const go = useCallback(async () => {
+    setLoad(true);
+    try {
+      const r = await callClaude("You are a top educational counsellor for Indian engineering aspirants. Give 6 current, actionable updates specifically for Class XI PCM students in India preparing for JEE/BITSAT in 2025. Cover: (1) Latest NTA/exam policy updates, (2) Best free study resources and apps right now, (3) Critical upcoming registration deadlines, (4) Most in-demand engineering specialisations to target, (5) Optimal study schedule strategy for Class XI, (6) One motivational insight backed by real data. Use numbered sections with bold headings. Keep language crisp, practical, and encouraging. Assume today is May 2025.");
+      setTxt(r); setDone(true);
+    } catch(e) { setTxt("Error fetching content. Please try again."); setDone(true); }
+    setLoad(false);
+  }, []);
+  return (
+    <div>
+      <h2 className="sec-t">AI-Powered Updates for Class XI Students</h2>
+      <p className="sec-s">Powered by Claude AI — freshest engineering prep intelligence, tailored for 2025 aspirants.</p>
+      {!done && !load && (
+        <div className="hero-empty">
+          <div className="icon">🤖</div>
+          <p>Click below to get AI-curated, current updates<br/>specifically for Class XI PCM students preparing for JEE and BITSAT.</p>
+          <button className="btn" onClick={go}>Get Latest Updates</button>
+        </div>
+      )}
+      {load && <Loader/>}
+      {done && (
+        <>
+          <div className="ai-box"><div className="ai-txt">{txt}</div></div>
+          <div style={{marginTop:"14px"}}><button className="btn btn-o" onClick={go}>Refresh</button></div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function SubjectTab({ sub, chs }) {
+  const [ch, setCh] = useState("");
+  const [txt, setTxt] = useState("");
+  const [load, setLoad] = useState(false);
+  const go = useCallback(async () => {
+    if (!ch) return;
+    setLoad(true); setTxt("");
+    try {
+      const r = await callClaude("You are an expert " + sub + " teacher for Class XI CBSE and JEE students in India. For the chapter \"" + ch + "\" provide:\n1. Chapter Overview (3 lines max)\n2. Five most important exam questions (mix of conceptual, numerical, application types).\nFor each question:\nQ: [question]\nAnswer: [complete step-by-step model answer with key formulas, marks noted]\nMake content usable for both JEE and CBSE board exam preparation.");
+      setTxt(r);
+    } catch(e) { setTxt("⚠️ Error: " + (e.message || "API call failed") + "\n\nIf you are on GitHub Pages, please enter your Anthropic API key in the banner at the top of the page and try again."); }
+      <p className="sec-s">Select any chapter to instantly generate the 5 most important questions with complete model answers (JEE + Board ready).</p>
+      <div className="row">
+        <select value={ch} onChange={e => { setCh(e.target.value); setTxt(""); }}>
+          <option value="">Select a chapter...</option>
+          {chs.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <button className="btn" disabled={!ch || load} onClick={go}>Generate Q & A</button>
+      </div>
+      {load && <Loader/>}
+      {txt && <div className="ai-box"><div className="ai-txt">{txt}</div></div>}
+    </div>
+  );
+}
+
+function CBSETab() {
+  const [sub, setSub] = useState("Physics");
+  const [ch, setCh] = useState("");
+  const [txt, setTxt] = useState("");
+  const [load, setLoad] = useState(false);
+  const go = useCallback(async () => {
+    if (!ch) return;
+    setLoad(true); setTxt("");
+    try {
+      const r = await callClaude("You are a CBSE Class XI " + sub + " expert examiner. For chapter \"" + ch + "\" create a full CBSE Higher Secondary Board-style question set:\n- 2 Very Short Answer (1 mark each)\n- 2 Short Answer Type-I (2 marks each)\n- 2 Short Answer Type-II (3 marks each)\n- 2 Long Answer (5 marks each)\n- 1 Case-Based Question (4 marks, with a 4-5 line scenario)\nFor every question provide a complete CBSE-style model answer with step-by-step working and marks allocated clearly. Match exact CBSE board style and difficulty.");
+      setTxt(r);
+    } catch(e) { setTxt("⚠️ Error: " + (e.message || "API call failed") + "\n\nIf you are on GitHub Pages, please enter your Anthropic API key in the banner at the top and try again."); }
+    setLoad(false);
+  }, [sub, ch]);
+  return (
+    <div>
+      <h2 className="sec-t">CBSE Higher Secondary Board Exam Prep</h2>
+      <p className="sec-s">Select subject and chapter to generate a complete CBSE-format question paper with mark-wise model answers.</p>
+      <div className="row">
+        <select value={sub} onChange={e => { setSub(e.target.value); setCh(""); setTxt(""); }} style={{maxWidth:"180px"}}>
+          {Object.keys(CBSE_MAP).map(s => <option key={s}>{s}</option>)}
+        </select>
+        <select value={ch} onChange={e => { setCh(e.target.value); setTxt(""); }}>
+          <option value="">Select chapter...</option>
+          {CBSE_MAP[sub].map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <button className="btn" disabled={!ch || load} onClick={go}>Generate Board Questions</button>
+      </div>
+      {load && <Loader/>}
+      {txt && <div className="ai-box"><div className="ai-txt">{txt}</div></div>}
+    </div>
+  );
+}
+
+
+
+// ── NEWS TAB ──
+function NewsTab() {
+  const [cbseTxt, setCbseTxt] = useState("");
+  const [compTxt, setCompTxt] = useState("");
+  const [cbseLoad, setCbseLoad] = useState(false);
+  const [compLoad, setCompLoad] = useState(false);
+  const staticCBSE = [
+    {cat:"CBSE Board",title:"CBSE Class XII Results 2025 Declared",body:"CBSE announced Class XII board results for 2025. Girls outperformed boys with a 91.5% pass rate. Thiruvananthapuram region tops the chart for the third consecutive year.",date:"May 2025",cls:""},
+    {cat:"CBSE Policy",title:"No Major Syllabus Reduction for 2025-26",body:"CBSE has confirmed the full syllabus will be reinstated for 2025-26 academic year. Students should prepare complete chapters without expecting cuts.",date:"Apr 2025",cls:"blue"},
+    {cat:"CBSE Exam",title:"Class X & XII Practical Dates Released",body:"CBSE has issued guidelines for school-based practical examinations. Schools must upload marks by January 15. Internal assessment carries 20% weightage.",date:"Nov 2024",cls:"green"},
+    {cat:"CBSE Update",title:"Two-Level Mathematics Continues in Class X",body:"CBSE confirms Basic and Standard Mathematics will continue. Standard Maths is required for PCM stream in Class XI.",date:"Oct 2024",cls:"blue"},
+  ];
+  const staticComp = [
+    {cat:"JEE Main",title:"JEE Main Session 2 Results Out",body:"NTA declared JEE Main 2025 Session 2 results. 24 candidates scored 100 percentile. Final merit list considers best of both sessions.",date:"May 2025",cls:""},
+    {cat:"JEE Advanced",title:"JEE Advanced 2025 Registration Open",body:"Candidates who qualified JEE Main 2025 (Top 2.5 lakh) can register on jeeadv.ac.in. Registration closes May 2025. Exam scheduled for June 2025.",date:"May 2025",cls:"blue"},
+    {cat:"BITSAT",title:"BITSAT 2025 Slot Booking Ongoing",body:"BITS Pilani has opened slot booking for BITSAT 2025. Exam window: May 21 – June 2. Candidates advised to book slots before preferred centres fill up.",date:"Apr 2025",cls:"green"},
+    {cat:"NTA Notice",title:"NTA Announces Revised Test Centre Policy",body:"NTA has added 50 new exam centres across Tier-2 cities for JEE Main 2026. Students can now choose centres closer to home to reduce travel burden.",date:"Mar 2025",cls:"blue"},
+  ];
+  const fetchCBSE = useCallback(async () => {
+    setCbseLoad(true);
+    try { const r = await callClaude("Give 3 very recent (2025) CBSE board exam updates for Class XI and XII students in India. Cover any new policy, date announcements, syllabus changes, or result news. Format each update as: HEADLINE: [headline] | DETAIL: [2-3 sentence explanation] | DATE: [approximate date]. Separate each update with ---"); setCbseTxt(r); } catch(e) { setCbseTxt("Could not fetch live update. Showing static data above."); }
+    setCbseLoad(false);
+  }, []);
+  const fetchComp = useCallback(async () => {
+    setCompLoad(true);
+    try { const r = await callClaude("Give 3 very recent (2025) competitive engineering exam updates for India — JEE Main, JEE Advanced, BITSAT, VITEEE, MHTCET, WBJEE. Cover registration deadlines, result dates, policy changes. Format each: HEADLINE: [headline] | DETAIL: [2-3 sentences] | DATE: [approximate date]. Separate with ---"); setCompTxt(r); } catch(e) { setCompTxt("Could not fetch live update. Showing static data above."); }
+    setCompLoad(false);
+  }, []);
+  return (
+    <div>
+      <h2 className="sec-t">Latest Exam Announcements</h2>
+      <p className="sec-s">Static highlights below + click AI Refresh to get the freshest 2025 announcements from Claude.</p>
+
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"10px",marginBottom:"12px"}}>
+        <div style={{fontFamily:"Syne",fontSize:"15px",fontWeight:"800",color:"#FFF"}}>📋 CBSE Board Updates</div>
+        <button className="btn btn-o" disabled={cbseLoad} onClick={fetchCBSE} style={{fontSize:"11.5px",padding:"7px 14px"}}>🤖 AI Refresh</button>
+      </div>
+      <div className="news-grid">
+        {staticCBSE.map(n => (
+          <div className={"news-card " + n.cls} key={n.title}>
+            <div className="news-cat">{n.cat}</div>
+            <div className="news-title">{n.title}</div>
+            <div className="news-body">{n.body}</div>
+            <div className="news-date">{n.date}</div>
+          </div>
+        ))}
+      </div>
+      {cbseLoad && <Loader/>}
+      {cbseTxt && <div className="ai-box" style={{marginBottom:"22px"}}><div className="ai-txt">{cbseTxt}</div></div>}
+
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"10px",margin:"24px 0 12px"}}>
+        <div style={{fontFamily:"Syne",fontSize:"15px",fontWeight:"800",color:"#FFF"}}>🏆 Competitive Exam Announcements</div>
+        <button className="btn btn-o" disabled={compLoad} onClick={fetchComp} style={{fontSize:"11.5px",padding:"7px 14px"}}>🤖 AI Refresh</button>
+      </div>
+      <div className="news-grid">
+        {staticComp.map(n => (
+          <div className={"news-card " + n.cls} key={n.title}>
+            <div className="news-cat">{n.cat}</div>
+            <div className="news-title">{n.title}</div>
+            <div className="news-body">{n.body}</div>
+            <div className="news-date">{n.date}</div>
+          </div>
+        ))}
+      </div>
+      {compLoad && <Loader/>}
+      {compTxt && <div className="ai-box"><div className="ai-txt">{compTxt}</div></div>}
+    </div>
+  );
+}
+
+// ── COURSES TAB ──
+function CoursesTab() {
+  const [cat, setCat] = useState("JEE / Engineering");
+  const cats = Object.keys(COURSES);
+  return (
+    <div>
+      <h2 className="sec-t">Best Courses & Training — Topic-wise</h2>
+      <p className="sec-s">Curated free and paid platforms for every subject and exam. Choose a category to explore.</p>
+      <div className="topic-wrap">
+        {cats.map(c => (
+          <button key={c} className={"topic-btn" + (cat === c ? " sel" : "")} onClick={() => setCat(c)}>{c}</button>
+        ))}
+      </div>
+      <div className="crs-grid">
+        {COURSES[cat].map(c => (
+          <div className="crs-card" key={c.n}>
+            <div className="crs-top">
+              <div className="crs-name">{c.n}</div>
+              <span className={c.free ? "crs-free" : "crs-paid"}>{c.free ? "FREE" : "PAID"}</span>
+            </div>
+            <div className="crs-sub">{c.sub}</div>
+            <div className="crs-desc">{c.d}</div>
+            <a className="crs-link" href={"https://" + c.l} target="_blank" rel="noreferrer">→ {c.l}</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── ENGLISH XII TAB ──
+function EnglishTab() {
+  const [topic, setTopic] = useState("");
+  const [txt, setTxt] = useState("");
+  const [load, setLoad] = useState(false);
+  const go = useCallback(async () => {
+    if (!topic) return;
+    setLoad(true); setTxt("");
+    try {
+      const r = await callClaude("You are a CBSE Class XII English expert teacher and examiner (CBSE Board India). For the topic/chapter \"" + topic + "\" provide:\n1. TOPIC OVERVIEW: 3-line summary of theme, author, significance.\n2. FIVE MOST IMPORTANT QUESTIONS with Band 9 / Full-marks Model Answers:\n   - Include 1x Extract-based question, 1x Short Answer (3-4 marks), 2x Long Answer (6 marks), 1x Value-based or creative writing question.\n   - For each: Q: [question] | Answer: [complete, detailed, Band 9-quality model answer using literary devices, theme analysis, character analysis as needed. Show mark allocation.]\n3. WRITING TIP: One key examiner tip for scoring full marks on this topic.\nWrite in formal, examiner-approved language. Answers should be comprehensive enough to score 100% marks in CBSE board.");
+      setTxt(r);
+    } catch(e) { setTxt("Error. Please try again."); }
+    setLoad(false);
+  }, [topic]);
+  return (
+    <div>
+      <h2 className="sec-t">Class XII English — Band 9 Model Answers</h2>
+      <p className="sec-s">Select any Flamingo / Vistas chapter or writing skill → get complete Band 9 model answers for CBSE board.</p>
+      <div className="topic-wrap">
+        {ENG_TOPICS.map(t => (
+          <button key={t} className={"topic-btn" + (topic === t ? " sel" : "")} onClick={() => { setTopic(t); setTxt(""); }}>{t}</button>
+        ))}
+      </div>
+      {topic && <div style={{marginBottom:"16px",display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>
+        <span style={{fontSize:"12px",color:"rgba(226,226,240,.5)"}}>Selected: <b style={{color:"#FF9240"}}>{topic}</b></span>
+        <button className="btn" disabled={load} onClick={go}>Generate Band 9 Answers →</button>
+      </div>}
+      {load && <Loader/>}
+      {txt && <div className="ai-box"><div className="ai-txt">{txt}</div></div>}
+    </div>
+  );
+}
+
+// ── PYTHON XII TAB ──
+function PythonTab() {
+  const [topic, setTopic] = useState("");
+  const [txt, setTxt] = useState("");
+  const [load, setLoad] = useState(false);
+  const go = useCallback(async () => {
+    if (!topic) return;
+    setLoad(true); setTxt("");
+    try {
+      const r = await callClaude("You are a CBSE Class XII Computer Science (Python) expert teacher and examiner. For the topic \"" + topic + "\" provide:\n1. TOPIC OVERVIEW: What it covers and why it's important for board exams (3 lines).\n2. FIVE MOST IMPORTANT QUESTIONS with complete model answers:\n   - Mix: 1x 1-mark (definition/output), 1x 2-mark (short code or explanation), 2x 3-mark (program writing), 1x 5-mark (full program or detailed concept).\n   - For each Q: write the question exactly as CBSE would ask it. Then provide a complete, examiner-perfect answer with code (properly indented and commented where needed), output, and explanation.\n3. MOST COMMON MISTAKES students make on this topic and how to avoid them.\nAll code must be Python 3 compatible. Match exact CBSE Class XII board difficulty and marking scheme.");
+      setTxt(r);
+    } catch(e) { setTxt("Error. Please try again."); }
+    setLoad(false);
+  }, [topic]);
+  return (
+    <div>
+      <h2 className="sec-t">Class XII Python — Board Q & A</h2>
+      <p className="sec-s">Select a topic → get CBSE-style questions with complete model answers and perfect code for full marks.</p>
+      <div className="topic-wrap">
+        {PY_TOPICS.map(t => (
+          <button key={t} className={"topic-btn" + (topic === t ? " sel" : "")} onClick={() => { setTopic(t); setTxt(""); }}>{t}</button>
+        ))}
+      </div>
+      {topic && <div style={{marginBottom:"16px",display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>
+        <span style={{fontSize:"12px",color:"rgba(226,226,240,.5)"}}>Selected: <b style={{color:"#FF9240"}}>{topic}</b></span>
+        <button className="btn" disabled={load} onClick={go}>Generate Model Answers →</button>
+      </div>}
+      {load && <Loader/>}
+      {txt && <div className="ai-box"><div className="ai-txt">{txt}</div></div>}
+    </div>
+  );
+}
+
+
+  {id:"prog",lbl:"🎓 Top Programs"},
+  {id:"exam",lbl:"📝 Entrance Exams"},
+  {id:"enrl",lbl:"📅 How to Enroll"},
+  {id:"ai",lbl:"🤖 AI Updates"},
+  {id:"phy",lbl:"⚛️ Physics"},
+  {id:"chem",lbl:"🧪 Chemistry"},
+  {id:"math",lbl:"∑ Mathematics"},
+  {id:"cbse",lbl:"📚 CBSE Board XI"},
+  {id:"news",lbl:"📢 Latest News"},
+  {id:"eng",lbl:"📖 English XII"},
+  {id:"py",lbl:"🐍 Python XII"},
+  {id:"courses",lbl:"🎯 Best Courses"},
+];
+
+function ApiKeyBanner() {
+  const [key, setKey] = useState("");
+  const [saved, setSaved] = useState(false);
+  const save = () => { setApiKey(key); setSaved(true); setTimeout(() => setSaved(false), 3000); };
+  return (
+    <div className="api-banner">
+      <span>🔑 Anthropic API Key</span>
+      <input
+        className="api-input"
+        type="password"
+        placeholder="sk-ant-... (needed on GitHub Pages, not on Claude.ai)"
+        value={key}
+        onChange={e => setKey(e.target.value)}
+        onKeyDown={e => e.key === "Enter" && save()}
+      />
+      <button className="btn" style={{padding:"7px 14px",fontSize:"11.5px"}} onClick={save}>Save</button>
+      {saved && <span className="api-ok">✓ Key saved for this session</span>}
+      <span className="api-info">Get free key: console.anthropic.com</span>
+    </div>
+  );
+}
+
+function App() {
+  const [active, setActive] = useState("prog");
+  return (
+    <div>
+      <div className="hdr">
+        <div>
+          <div className="logo">INGENIA</div>
+          <div className="tagline">India's Engineering Intelligence Hub</div>
+        </div>
+        <span className="pill">Class XI · XII · JEE · CBSE</span>
+      </div>
+      <ApiKeyBanner/>
+      <div className="tabbar">
+        {TABS.map(t => (
+          <button key={t.id} className={"tb" + (active === t.id ? " on" : "")} onClick={() => setActive(t.id)}>{t.lbl}</button>
+        ))}
+      </div>
+      <div className="page">
+        {active === "prog"    && <ProgramsTab/>}
+        {active === "exam"    && <ExamsTab/>}
+        {active === "enrl"    && <EnrollTab/>}
+        {active === "news"    && <NewsTab/>}
+        {active === "ai"      && <AIUpdatesTab/>}
+        {active === "phy"     && <SubjectTab sub="Physics" chs={PHY}/>}
+        {active === "chem"    && <SubjectTab sub="Chemistry" chs={CHEM}/>}
+        {active === "math"    && <SubjectTab sub="Mathematics" chs={MATH}/>}
+        {active === "cbse"    && <CBSETab/>}
+        {active === "eng"     && <EnglishTab/>}
+        {active === "py"      && <PythonTab/>}
+        {active === "courses" && <CoursesTab/>}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
